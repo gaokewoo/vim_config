@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_fp_linux/SOURCE_COMMON/fsc/gnssassistancedatahandler/framework'
+let g:netrw_dirhist_2='/proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_fp_linux/SOURCE_COMMON/fsc/gnssassistancedatahandler/framework/providerinfo'
+let g:netrw_dirhist_3='/home/xwugaok'
+let g:netrw_dirhist_4='/proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_fp_linux'
