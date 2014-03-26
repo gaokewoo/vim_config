@@ -162,6 +162,7 @@ let g:tagbar_left = 1
 """""""""""""""""""config NERD_tree""""""""""""""""
 let g:NERDTreeWinPos = 'right'
 let NERDTreeShowBookmarks = 1
+let NERDTreeDirArrows = 0
 """""""""""""""""""""end"""""""""""""""""""
 
 """"""""""""""""config YRShow""""""""""""""
