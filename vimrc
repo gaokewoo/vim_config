@@ -53,18 +53,68 @@ set noswapfile
 set cursorline "display a line under the line of cursor on
 set autochdir " 自动切换当前目录为当前文件所在的目录
 
-set foldenable " 开始折叠
-set foldmethod=syntax " 设置语法折叠
-set foldcolumn=0 " 设置折叠区域的宽度
-setlocal foldlevel=1 " 设置折叠层数为
+"set foldenable " 开始折叠
+"set foldmethod=syntax " 设置语法折叠
+"set foldcolumn=0 " 设置折叠区域的宽度
+"setlocal foldlevel=1 " 设置折叠层数为
 
 set wh=50  "set the window height
 
-set tags=/proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_att_gnss_linux/tags
-"set csprg=/usr/bin/cscope
-"cs add /proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_fp_linux/cscope.out /proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_fp_linux/
-cs add /proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_att_gnss_linux/cscope.out /proj/MPS_DEV_REPO/xwugaok/xwugaok_rdc_s11_wp_att_gnss_linux/
+function! AutoLoadCTagsAndCScope()
+    let max = 10
+    let dir = './'
+    let i = 0
+    let break = 0
+    while isdirectory(dir) && i < max
+        if filereadable(dir . 'cscope.out') 
+            execute 'cs add ' . dir . 'cscope.out'
+            let break = 1
+        endif
+        if filereadable(dir . 'tags')
+            execute 'set tags =' . dir . 'tags'
+            let break = 1
+        endif
+        if break == 1
+            execute 'lcd ' . dir
+            break
+        endif
+        let dir = dir . '../'
+        let i = i + 1
+    endwhile
+endf
+nmap <F7> :call AutoLoadCTagsAndCScope()<CR>
+call AutoLoadCTagsAndCScope()
 
+function! UpdateCtagsAndCScope()
+    let curdir=getcwd()
+    while !filereadable("./tags")
+        cd ..
+        if getcwd() == "/"
+            break
+        endif
+    endwhile
+    if filewritable("./tags")
+        "!ctags -R --file-scope=yes --langmap=c:+.h --languages=c,c++ --links=yes --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q
+        !ctags -R .
+        "TlistUpdate
+    endif
+    execute ":cd " . curdir
+
+    let curdir=getcwd()
+    while !filereadable("./cscope.out")
+        cd ..
+        if getcwd() == "/"
+            break
+        endif
+    endwhile
+    if filewritable("./cscope.out")
+        !find . -name "*.h*" -o -name "*.c*"-o -name "*.java" > cscope.files
+        !cscope -bkq -i cscope.files
+    endif
+    execute ":cd " . curdir
+endfunction
+
+nmap <F8> :call UpdateCtagsAndCScope()<CR>
 
 """""""""""""""config Quick Key""""""""""""
 "nmap <silent> <F6> :YRShow<CR> 
